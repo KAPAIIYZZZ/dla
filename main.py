@@ -1,5 +1,5 @@
 import random
-class Cellular_automata:
+class Cellular_automata():
     def __init__(self, x, y):
         self.__x = x
         self.__y = y
@@ -74,6 +74,61 @@ class Cellular_automata:
                 break
             else:
                 print('Неверная команда')
+class DLA(Cellular_automata):
+    def __init__(self,x,y):
+        super().__init__(x,y)
+    def update(self):
+        self.field[random.randint(0,self.y-1)][random.randint(0,self.x-1)] = 1
+        print_field(self.field)
+        print()
+        while True:
+            n=0
+            x = random.randint(0, self.x - 1)
+            y = random.randint(0, self.y - 1)
+            if self.field[y][x] == 0:
+                self.field[y][x] = 2
+                print_field(self.field)
+                print()
+                while self.field[y][x] != 1:
+
+                    self.neighbours(y, x)
+
+                    if self.field[y][x] != 1:
+                        self.field[y][x] = 0
+                        k = random.randint(1, 4)
+                        if k == 1:
+                            x -= 1
+                        elif k == 2:
+                            y -= 1
+                        elif k == 3:
+                            x += 1
+                        elif k == 4:
+                            y += 1
+                        if x == -1 or y == -1 or x == self.x or y == self.y:
+                            print_field(self.field)
+                            print()
+                            break
+                        else:
+                            self.field[y][x] = 2
+
+                    print_field(self.field)
+                    print()
+                    if self.field[y][x] == 1:
+                        break
+            for i in range(len(self.field)):
+                for j in range(len(self.field[i])):
+                    if self.field[j][i] == 1:
+                        n +=1
+            if n / (self.x * self.y) * 100 >= 30:
+                break
+
+    def neighbours(self,y,x):
+        for n in range(x - 1,x + 2):
+            for m in range(y - 1, y + 2):
+                if n == -1 or m == -1 or n == self.x or m == self.y or (n!= x and m != y):
+                    continue
+                elif self.field[m][n] == 1:
+                    self.field[y][x] = 1
 def print_field(field):
     for i in range(len(field)):
         for j in range(len(field[i])):
@@ -81,6 +136,6 @@ def print_field(field):
         print()
 
 def main():
-    cellular_automata = Cellular_automata(10,10)
-    cellular_automata.update()
+    dla = DLA(10, 10)
+    dla.update()
 main()
