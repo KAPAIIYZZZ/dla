@@ -89,7 +89,7 @@ class DLA(Cellular_automata):
                 self.field[y][x] = 2
                 print_field(self.field)
                 print()
-                while self.field[y][x] != 1:
+                while True:
 
                     self.neighbours(y, x)
 
